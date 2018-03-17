@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+<html> <head>
+<title>Display Controle Times</title>
+
+  <!-- 'viewport' is used by bootstrap to respond to device size -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Javascript:  JQuery from a content distribution network (CDN) -->
+  <script
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  </script>
+
+  <!-- Bootstrap includes javascript and css  (must follow jquery) -->
+  <link rel="stylesheet"
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+   </script>
+
+  <!-- moment.js is the JavaScript equivalent of arrow.py -->
+  <script 
+    src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
+
+</head>
+
+   <!-- Our own style sheet -->
+
+<body>
+<!-- bootstrap requires a 'container' div around content -->
+<div class="container">
+
+<h1>Control Times</h1>
+
+<div id="past"><ul style="list-style: none"></ul></div>
+
+<script type="text/javascript">
+
+  var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
+  var DISPLAY_INFO_URL = SCRIPT_ROOT + "/_display_info";
+
+  $(document).ready(function(){
+	function makePrintList(list){
+		printList = "";
+		printList += "<li><p>";
+		printList += "Start time/date = " + list["start"] + "km <br/>";
+		printList += "Race Length = " + list["distance"] + "km <br/>";
+		printList += "checkpoint = " + list["km"] + "km <br/>";
+		printList += "open = " + list["openTime"] + "<br />";
+		printList += "close = " + list["closeTime"] + "<br />";
+		printList += "</p></li>";
+		return printList;
+	}
+		
+
+	$.getJSON(DISPLAY_INFO_URL, 
+
+		function(data){
+			var entries = data.result;
+			var entryList = []
+			for(var key in entries)
+					entryList.push(entries[key]);
+			
+			var htmlList = "";
+			var currentSubmit = "";
+			
+			if(entryList.length == 0){
+				htmlList = "<li><p><font color='red'>Nothing to display; no control times have been submitted!</font></p></li>";
+			}
+			else {
+				for(var i = 0; i < entryList.length; ++i){
+					htmlList += makePrintList(entryList[i]);
+				}
+			}
+
+		        document.getElementById("past").children[0].innerHTML += htmlList;
+
+		} 
+
+	); //end JSON 
+
+   }); //end doc ready
+
+</script>
+
+</div>
+</body> </html>

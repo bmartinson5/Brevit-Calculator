@@ -1,0 +1,12 @@
+Flask
+flask-restful
+Flask-HTTPAuth==3.2.3
+arrow
+pep8
+autopep8
+pymongo
+itsdangerous==0.24
+passlib==1.7.1
+flask_login
+wtforms
+Flask-WTF

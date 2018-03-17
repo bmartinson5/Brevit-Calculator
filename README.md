@@ -1,18 +1,65 @@
-# Project 8: User interface for uthenticated brevet time calculator service
+README
 
-The goal of this project is to create frontend/UI for Brevet app using Flask-WTF
-and Flask-Login introduced in lectures 08a-flask-login and 08b-flask-wtf. You frontend/UI will reuse the
-authentication service that you created in project 7 (https://github.com/UOCIS322/proj7-auth); in this project,  you are only adding
-a facelift to the services. In addition to creating UI for basic authentication and token
-generation, you will add three additional functionalities in your UI: (a) remember me, (b) logout, 
-and (c) CSRF protection. Note: You don’t have to maintain sessions.
+Author: Benjamin Martinson
 
-## Tasks
+Note: port used is 5000 (specified at bottom of api.py)
 
-You'll turn in your credentials.ini using which we will get the following:
 
-* The working application with three parts.
+For this project, a frontend was added to make it easier to access
+the api. Now, to access the api, follow the instructions below:
 
-* Dockerfile
+First:
 
-* docker-compose.yml
+	'docker-compose up' from within current directory (same directory as README file)
+
+
+Or try:
+
+	'pip3 install requirements.txt'
+	'python3 api.py'
+
+
+NOTE: You can't use the api if you dont have a token, and you can't get a token if
+      your not logged in.
+
+
+To Register a new username and password:
+	
+	When running on default <host>:<port>  == http://0.0.0.0:5000
+
+	Try url: http://localhost:5000/api/register
+
+	-This should display templates/register.html
+
+	-Submitting new username and password will add to the database and 
+	 then redirect to login page (if already logged in to a user it will display token)
+
+
+Login Page:
+
+	url: http://localhost:5000/api/login
+
+	-Once logged in a token will be displayed
+
+
+Logout Page:
+
+	url: http://localhost:5000/api/logout
+
+	-Logging out will make you lose your access to token url
+
+
+Display Token:
+
+	url: http://localhost:5000/api/token
+
+	-Will redirect to login url if not already logged in
+	
+	
+Get an API resource (need a token first):
+
+	curl -u <token>:x -i -X GET <host>:<port>/<api route> 
+
+	-When successful, the api resource will be returned in JSON
+	-If the token is incorrect, an error (401) is output
+
